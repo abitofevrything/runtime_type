@@ -25,4 +25,4 @@ If you've seen this trick before, this package uses the same principle:
 bool isTypeASubtypeOfB<A, B>() => <A>[] is List<B>;
 ```
 
-However, that trick does not work when `A` and `B` cannot be resolved statically - which is why this package creates `RuntimeType` objects statically, but which can then be passed around and used dynamically as the type information is help within the object itself.
+However, that trick does not work when `A` and `B` cannot be resolved statically - which is why this package creates `RuntimeType` objects statically, but which can then be passed around and used dynamically as the type information is held within the object itself.
