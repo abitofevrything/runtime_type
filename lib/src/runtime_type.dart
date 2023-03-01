@@ -148,7 +148,8 @@ class RuntimeType<T> {
 
   /// Cast [instance] to this type, throwing if the cast fails.
   ///
-  /// This is similar to the `as` language operator: ```dart
+  /// This is similar to the `as` language operator:
+  /// ```dart
   /// // Before
   /// final castInstance = instance as String;
   ///
