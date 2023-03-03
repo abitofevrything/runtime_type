@@ -4,7 +4,7 @@ version: 1.0.1
 repository: https://github.com/abitofevrything/runtime_type
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.18.0 <4.0.0'
 
 dev_dependencies:
   lints: ^2.0.0
