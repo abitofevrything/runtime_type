@@ -1,6 +1,6 @@
 name: runtime_type
 description: A non-opaque representation of types at runtime.
-version: 1.0.0+1
+version: 1.0.1
 repository: https://github.com/abitofevrything/runtime_type
 
 environment:
