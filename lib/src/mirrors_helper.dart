@@ -7,9 +7,10 @@ extension TypeRuntimeType on Type {
   /// Create a [RuntimeType] representing this [Type].
   RuntimeType<dynamic> toRuntimeType() =>
       (reflectType(RuntimeType, [this]) as ClassMirror).newInstance(
-        Symbol.empty,
+        // Use the allowingDynamic constructor in case this type is dynamic.
+        #allowingDynamic,
         [],
-      ) as RuntimeType;
+      ).reflectee as RuntimeType;
 }
 
 /// Additional [RuntimeType] functionality for all objects.
