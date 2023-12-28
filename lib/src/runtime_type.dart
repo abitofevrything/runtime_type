@@ -163,6 +163,14 @@ class RuntimeType<T> {
   /// If this type is already nullable, the returned type will be equal to this type.
   RuntimeType<T?> nullable() => RuntimeType<T?>.allowingDynamic();
 
+  /// Run [callback], passing this type as a type parameter.
+  ///
+  /// Depending on the static type of the variable containing this [RuntimeType], the return type of
+  /// this function might require values to be casted. The values returned by this function will
+  /// have the type as they are constructed in the callback, so casting is safe even with generic
+  /// types.
+  R run<R>(R Function<U>() callback) => callback<T>();
+
   @override
   int get hashCode => internalType.hashCode;
 

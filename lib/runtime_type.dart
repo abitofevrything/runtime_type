@@ -14,3 +14,4 @@ library runtime_type;
 export 'src/runtime_type.dart';
 export 'src/common_types.dart';
 export 'src/type_extension.dart';
+export 'src/function_extensions.dart';

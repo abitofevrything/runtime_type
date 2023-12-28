@@ -156,6 +156,19 @@ void main() {
       expect(testDynamicType.nullable(), equals(testDynamicType));
     });
 
+    test('run', () {
+      RuntimeType<T> callback<T>() => RuntimeType<T>();
+
+      // Don't use type inference: https://github.com/dart-lang/sdk/issues/51590
+      RuntimeType<dynamic> result = objectType.run(callback);
+      expect(result, equals(objectType));
+
+      RuntimeType<T?> callback2<T>() => RuntimeType<T>().nullable();
+
+      RuntimeType<dynamic> result2 = objectType.run(callback2);
+      expect(result2, equals(objectType.nullable()));
+    });
+
     test('==', () {
       expect(testObjectType == testObjectType, isTrue);
       expect(testObjectType == testObjectNullableType, isFalse);
@@ -237,5 +250,51 @@ void main() {
     expect(() => null.castAs(testObjectType), throwsTypeError);
     expect(() => null.castAs(testObjectNullableType), returnsNormally);
     expect(() => null.castAs(testDynamicType), returnsNormally);
+  });
+
+  group('FunctionTypeX', () {
+    group('callWithTypeArguments', () {
+      test('passes type arguments', () {
+        List<RuntimeType<dynamic>> f<T1, T2, T3, T4, T5>() => [
+              RuntimeType<T1>(),
+              RuntimeType<T2>(),
+              RuntimeType<T3>(),
+              RuntimeType<T4>(),
+              RuntimeType<T5>(),
+            ];
+
+        final list = f.callWithTypeArguments(intType, stringType, objectType, nullType, boolType);
+
+        expect(list, hasLength(5));
+        expect(list[0], equals(intType));
+        expect(list[1], equals(stringType));
+        expect(list[2], equals(objectType));
+        expect(list[3], equals(nullType));
+        expect(list[4], equals(boolType));
+      });
+
+      test('Passes normal arguments', () {
+        var wasCalled = false;
+
+        void f<T>(String a, int b) {
+          wasCalled = true;
+          expect(a, equals('foo'));
+          expect(b, equals(1024));
+          expect(T, equals(String));
+        }
+
+        f.callWithTypeArgument(stringType, 'foo', 1024);
+        expect(wasCalled, isTrue);
+      });
+    });
+
+    test('withTypeArguments', () {
+      T f<T>(dynamic arg) => arg as T;
+
+      // Cast to work around https://github.com/dart-lang/sdk/issues/51590
+      final stringF = (f as dynamic Function<T>(dynamic)).withTypeArgument(stringType);
+      expect(stringF, isA<String Function(dynamic)>());
+      expect(stringF('foo'), equals('foo'));
+    });
   });
 }
